@@ -62,340 +62,42 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-PHP/数据库连接类(DB)" class="article article-type-post" itemscope="" itemprop="blogPost">
+    <article id="post-hello-world" class="article article-type-post" itemscope="" itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/11/13/PHP/数据库连接类(DB)/" class="article-date">
-  <time datetime="2018-11-13T08:45:32.114Z" itemprop="datePublished">2018-11-13</time>
+    <a href="/2018/11/13/hello-world/" class="article-date">
+  <time datetime="2018-11-13T07:42:09.918Z" itemprop="datePublished">2018-11-13</time>
 </a>
     
   </div>
   <div class="article-inner">
     
     
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/11/13/hello-world/">Hello World</a>
+    </h1>
+  
+
+      </header>
+    
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="MySQLi面向对象的使用方法"><a href="#MySQLi面向对象的使用方法" class="headerlink" title="MySQLi面向对象的使用方法"></a>MySQLi面向对象的使用方法</h1><h2 id="1-创建DB类"><a href="#1-创建DB类" class="headerlink" title="1.创建DB类"></a>1.创建DB类</h2><h3 id="由于数据库的连接操作在日常开发中使用频繁-所以可以将其封装为一个类-以面向对象的方式进行数据库的链接"><a href="#由于数据库的连接操作在日常开发中使用频繁-所以可以将其封装为一个类-以面向对象的方式进行数据库的链接" class="headerlink" title="由于数据库的连接操作在日常开发中使用频繁.所以可以将其封装为一个类.以面向对象的方式进行数据库的链接."></a>由于数据库的连接操作在日常开发中使用频繁.所以可以将其封装为一个类.以面向对象的方式进行数据库的链接.</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">    // 数据库操作类MySQLDB</span><br><span class="line">    class DB &#123;</span><br><span class="line">        // 声明属性</span><br><span class="line">        private $server;</span><br><span class="line">        private $username;</span><br><span class="line">        private $password;</span><br><span class="line">        public $default_db;</span><br><span class="line">        public $link;</span><br><span class="line">        // 声明构造函数</span><br><span class="line">        public function __construct($server,$username,$password,$default_db) &#123;</span><br><span class="line">            // 设置连接字符串</span><br><span class="line">            $this-&gt;server = $server;</span><br><span class="line">            $this-&gt;username = $username;</span><br><span class="line">            $this-&gt;password = $password;</span><br><span class="line">            $this-&gt;default_db = $default_db;</span><br><span class="line">            // 连接数据库</span><br><span class="line">            $this-&gt;link = mysqli_connect($this-&gt;server,$this-&gt;username,$this-&gt;password);</span><br><span class="line">            //if判断$link是否为true.若为false则!false = ture则执行;</span><br><span class="line">            if (!$this-&gt;link) &#123;</span><br><span class="line">                echo &apos;database connect failure!&apos;;</span><br><span class="line">            &#125;</span><br><span class="line">            // 设置默认的数据库</span><br><span class="line">            $bool = mysqli_select_db($this-&gt;link,$this-&gt;default_db);</span><br><span class="line">            if (!$bool) &#123;</span><br><span class="line">                echo &apos;Select default_db failure!&apos;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        // 声明析构函数</span><br><span class="line">        public function __destruct() &#123;</span><br><span class="line">            mysqli_close($this-&gt;link);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    //测试代码如下:</span><br><span class="line">    $db = new DB(&apos;localhost&apos;,&apos;root&apos;,&apos;roo&apos;,&apos;test&apos;);</span><br><span class="line">    $link = $db-&gt;link;</span><br><span class="line">    $sql = &quot;select * from account where id &gt;= 3 and id &lt;= 5&quot;;</span><br><span class="line">    $result = mysqli_query($link,$sql);</span><br><span class="line">    $row = $result-&gt;fetch_all(MYSQLI_BOTH);</span><br><span class="line">    $n = 0;</span><br><span class="line">    while ($n &lt; mysqli_num_rows($result))&#123;</span><br><span class="line">        echo &quot;ID : &quot;.$row[$n][&apos;id&apos;].&quot;MONEY : &quot;.$row[$n][&apos;money&apos;].&quot;PASSWORD : &quot;.$row[$n][&apos;password&apos;].&quot;&lt;br/&gt;&quot;;</span><br><span class="line">        $n++;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<h2 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果:"></a>测试结果:</h2><p><img src="https://note.youdao.com/yws/public/resource/caed20359e0031fbb1ecdb5137c28502/xmlnote/64A0D082D8CC46429DEB8643CA97CC74/459" alt="image"></p>
-<h3 id="虽然对数据库的连接进行了类的封装-但是实际调用时每次都需要对数据库连接的参数进行设置-与此同时-在实际的开发中多次调用不同的数据库场景几乎没有-所以可以对DB类进行迭代"><a href="#虽然对数据库的连接进行了类的封装-但是实际调用时每次都需要对数据库连接的参数进行设置-与此同时-在实际的开发中多次调用不同的数据库场景几乎没有-所以可以对DB类进行迭代" class="headerlink" title="虽然对数据库的连接进行了类的封装,但是实际调用时每次都需要对数据库连接的参数进行设置.与此同时,在实际的开发中多次调用不同的数据库场景几乎没有,所以可以对DB类进行迭代"></a>虽然对数据库的连接进行了类的封装,但是实际调用时每次都需要对数据库连接的参数进行设置.与此同时,在实际的开发中多次调用不同的数据库场景几乎没有,所以可以对DB类进行迭代</h3><h2 id="2-DB类的迭代"><a href="#2-DB类的迭代" class="headerlink" title="2.DB类的迭代"></a>2.DB类的迭代</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/11/13/PHP/数据库连接类(DB)/" data-id="cjofhygt20008jsnxqlutpd4m" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-PHP/PHP单例模式" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/11/13/PHP/PHP单例模式/" class="article-date">
-  <time datetime="2018-11-13T08:45:32.112Z" itemprop="datePublished">2018-11-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="PHP单例模式"><a href="#PHP单例模式" class="headerlink" title="PHP单例模式"></a>PHP单例模式</h1><h3 id="单例模式，是一种常用的软件设计模式。在它的核心结构中只包含一个被称为单例的特殊类。通过单例模式可以保证系统中一个类只有一个实例。即一个类只有一个对象实例。"><a href="#单例模式，是一种常用的软件设计模式。在它的核心结构中只包含一个被称为单例的特殊类。通过单例模式可以保证系统中一个类只有一个实例。即一个类只有一个对象实例。" class="headerlink" title="单例模式，是一种常用的软件设计模式。在它的核心结构中只包含一个被称为单例的特殊类。通过单例模式可以保证系统中一个类只有一个实例。即一个类只有一个对象实例。"></a>单例模式，是一种常用的软件设计模式。在它的核心结构中只包含一个被称为单例的特殊类。通过单例模式可以保证系统中一个类只有一个实例。即一个类只有一个对象实例。</h3><h3 id="要点主要有三个："><a href="#要点主要有三个：" class="headerlink" title="要点主要有三个："></a>要点主要有三个：</h3><p>==1.一个类只能有一个对象；==</p>
-<p>==2.必须是自行创建这个类的对象；==</p>
-<p>==3.要想整个系统提供这一个对象；==</p>
-<h3 id="从具体实现角度来说，就是以下三点："><a href="#从具体实现角度来说，就是以下三点：" class="headerlink" title="从具体实现角度来说，就是以下三点："></a>从具体实现角度来说，就是以下三点：</h3><p>一是单例模式的类只提供私有的构造函数，</p>
-<p>二是类定义中含有一个该类的静态私有对象，</p>
-<p>三是该类提供了一个静态的公有的函数用于创建或获取它本身的静态私有对象。</p>
-<p>当然还要有一个private的clone方法，防止克隆；</p>
-<h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><h3 id="一、实例控制"><a href="#一、实例控制" class="headerlink" title="一、实例控制"></a>一、实例控制</h3><p>单例模式会阻止其他对象实例化其自己的单例对象的副本，从而确保所有对象都访问唯一实例。<br>二、灵活性<br>因为类控制了实例化过程，所以类可以灵活更改实例化过程。</p>
-<h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2><h3 id="一、开销"><a href="#一、开销" class="headerlink" title="一、开销"></a>一、开销</h3><p>虽然数量很少，但如果每次对象请求引用时都要检查是否存在类的实例，将仍然需要一些开销。可以通过使用静态初始化解决此问题。</p>
-<h3 id="二、可能的开发混淆"><a href="#二、可能的开发混淆" class="headerlink" title="二、可能的开发混淆"></a>二、可能的开发混淆</h3><p>使用单例对象（尤其在类库中定义的对象）时，开发人员必须记住自己不能使用new关键字实例化对象。因为可能无法访问库源代码，因此应用程序开发人员可能会意外发现自己无法直接实例化此类。</p>
-<h3 id="三、对象生存期"><a href="#三、对象生存期" class="headerlink" title="三、对象生存期"></a>三、对象生存期</h3><p>不能解决删除单个对象的问题。在提供内存管理的语言中（例如基于.NET Framework的语言），只有单例类能够导致实例被取消分配，因为它包含对该实例的私有引用。在某些语言中（如 C++），其他类可以删除对象实例，但这样会导致单例类中出现悬浮引用。。（此处不是很懂，求解）</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/11/13/PHP/PHP单例模式/" data-id="cjofhygsq0002jsnx94uyz797" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-PHP/最终类和最终方法" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/11/13/PHP/最终类和最终方法/" class="article-date">
-  <time datetime="2018-11-13T08:45:32.111Z" itemprop="datePublished">2018-11-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="最终类和最终方法"><a href="#最终类和最终方法" class="headerlink" title="最终类和最终方法"></a>最终类和最终方法</h1><h2 id="1-最终类"><a href="#1-最终类" class="headerlink" title="1.最终类"></a>1.最终类</h2><p><strong>最终类无法被继承.</strong>    </p>
-<p>对于该类的设计人员而言,这个类的功能已经十分完备,不需要通过其他类来继承并丰富它.</p>
-<p><strong>最终类的写法如下:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?PHP</span><br><span class="line">final class 类名&#123;</span><br><span class="line">    ....类的成员......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="2-最终方法"><a href="#2-最终方法" class="headerlink" title="2.最终方法"></a>2.最终方法</h2><p>定义一个方法,并预先设定好,这个方法<strong>不允许下级类来覆盖</strong></p>
-<p><strong>最终方法的写法如下:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">final function 方法名()&#123;</span><br><span class="line">    ...........................</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/11/13/PHP/最终类和最终方法/" data-id="cjofhygt6000ajsnxicf9p1hr" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-PHP/工厂模式" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/11/13/PHP/工厂模式/" class="article-date">
-  <time datetime="2018-11-13T08:45:32.110Z" itemprop="datePublished">2018-11-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h1><h3 id="工厂模式-即一个工厂类Factory-中可以接受一个参数-这个参数是需要实例化的类的名字-例如类B-然后这个类Factory-就可以生产出传过来的这个类名-B-的对象"><a href="#工厂模式-即一个工厂类Factory-中可以接受一个参数-这个参数是需要实例化的类的名字-例如类B-然后这个类Factory-就可以生产出传过来的这个类名-B-的对象" class="headerlink" title="工厂模式 , 即一个工厂类Factory()中可以接受一个参数  ,  这个参数是需要实例化的类的名字 , 例如类B . 然后这个类Factory()就可以生产出传过来的这个类名(B)的对象."></a>工厂模式 , 即一个工厂类Factory()中可以接受一个参数  ,  这个参数是需要实例化的类的名字 , 例如类B . 然后这个类Factory()就可以生产出传过来的这个类名(B)的对象.</h3><h2 id="代码实现如下"><a href="#代码实现如下" class="headerlink" title="代码实现如下:"></a>代码实现如下:</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class A&#123;&#125;//类A</span><br><span class="line">class B&#123;&#125;//类B</span><br><span class="line"></span><br><span class="line">class Factory&#123;//工厂类</span><br><span class="line">    static function GetObj($classname)&#123;//传参类名</span><br><span class="line">        $obj = new $classname();//实例化</span><br><span class="line">        return $obj;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$obj1 = Factory::GetObj(A);//实例化类A</span><br><span class="line"></span><br><span class="line">$obj2 = Factory::GetObj(B);//实例化类B</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/11/13/PHP/工厂模式/" data-id="cjofhygsz0006jsnxe45ms0do" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-PHP/Mysqli面向过程的使用方法" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/11/13/PHP/Mysqli面向过程的使用方法/" class="article-date">
-  <time datetime="2018-11-13T08:45:32.098Z" itemprop="datePublished">2018-11-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Mysqli面向过程的使用方法"><a href="#Mysqli面向过程的使用方法" class="headerlink" title="Mysqli面向过程的使用方法"></a>Mysqli面向过程的使用方法</h1><h2 id="1-数据库连接"><a href="#1-数据库连接" class="headerlink" title="1.数据库连接"></a>1.数据库连接</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$local = &quot;locallhost&quot;;</span><br><span class="line">$user = &quot;root&quot;;</span><br><span class="line">$password = &quot;root&quot;;</span><br><span class="line">$dbname = &quot;test&quot;;</span><br><span class="line">$conn = mysqli_connect($loca,$user,$password,$dbname);</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<h2 id="2-数据查询"><a href="#2-数据查询" class="headerlink" title="2.数据查询"></a>2.数据查询</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">    $sql = &quot;select * from account &quot;;</span><br><span class="line">    $result = mysqli_query($conn,$sql);</span><br><span class="line">    $row = $result-&gt;fetch_all(MYSQLI_BOTH);</span><br><span class="line">    $n = 0;</span><br><span class="line">    while($n &lt; mysqli_row_num($result))&#123;</span><br><span class="line">        echo &quot;ID:&quot;.$row[$n][&quot;id&quot;].&quot;用户名：&quot;.$row[$n][&quot;money&quot;].&quot;密码：&quot;.$row[$n][&quot;password&quot;].&quot;&lt;br /&gt;&quot;;</span><br><span class="line">   	$n++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>结果如图所示:</p>
-<p><img src="https://note.youdao.com/yws/public/resource/caed20359e0031fbb1ecdb5137c28502/xmlnote/A202BE0A5447439A97A3684EA1057E65/374" alt="image"></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/11/13/PHP/Mysqli面向过程的使用方法/" data-id="cjofhygst0003jsnx8fg7oo30" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-PHP/单例模式" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/11/13/PHP/单例模式/" class="article-date">
-  <time datetime="2018-11-13T08:45:32.060Z" itemprop="datePublished">2018-11-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h1><h3 id="在实际应用中-有时只需要实例化一个对象就可以完成相应的工作"><a href="#在实际应用中-有时只需要实例化一个对象就可以完成相应的工作" class="headerlink" title="在实际应用中,有时只需要实例化一个对象就可以完成相应的工作."></a>在实际应用中,有时只需要实例化一个对象就可以完成相应的工作.</h3><h3 id="那么设计一个类-让这个类只得到一个对象-此时该类被称为”单例类”-其new出的对象就是一个”单例对象”"><a href="#那么设计一个类-让这个类只得到一个对象-此时该类被称为”单例类”-其new出的对象就是一个”单例对象”" class="headerlink" title="那么设计一个类,让这个类只得到一个对象,此时该类被称为”单例类”,其new出的对象就是一个”单例对象”"></a>那么设计一个类,让这个类只得到一个对象,此时该类被称为”单例类”,其new出的对象就是一个”单例对象”</h3><p><strong>==如此设计的目的是为了节省资源开销;==</strong></p>
-<h2 id="单例类的设计方法"><a href="#单例类的设计方法" class="headerlink" title="单例类的设计方法:"></a>单例类的设计方法:</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&lt;?PHP</span><br><span class="line">class Single&#123;</span><br><span class="line">    //$s用来存储实例过的对象</span><br><span class="line">    private static $s = null;</span><br><span class="line">    </span><br><span class="line">    //私有的构造方法,让外部无法new新对象</span><br><span class="line">    private function __construct()&#123;</span><br><span class="line">        echo &quot;想new我? 不存在的!&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    //外部通过调用该静态方法,来获取对象</span><br><span class="line">    //该方法必须为静态方法,因为这个类无法直接被实例化</span><br><span class="line">    //所以无法通过$obj1 -&gt; GetOne()的形式调用该方法</span><br><span class="line">    static function GetOne()&#123;</span><br><span class="line">    	</span><br><span class="line">        if ( empty(self::$s) )&#123;//判断$s属性是否已经有对象了</span><br><span class="line">            self::$s = new self();//$s为空,说明没有new过,就new一个保存在属性$s</span><br><span class="line">            return self::$s;</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            return self::$s;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">//下面为测试代码:</span><br><span class="line">$obj1 = Single::GetOne();</span><br><span class="line">var_dump($obj1);</span><br><span class="line">echo &quot;&lt;br/&gt;&quot;;</span><br><span class="line">$obj2 = Single::GetOne();</span><br><span class="line">var_dump($obj2);</span><br></pre></td></tr></table></figure>
-<h3 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果:"></a>测试结果:</h3><p><img src="https://note.youdao.com/yws/public/resource/caed20359e0031fbb1ecdb5137c28502/xmlnote/118E32907B5C4A1BAD676A6FF2622D09/653" alt="image"></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/11/13/PHP/单例模式/" data-id="cjofhygsx0005jsnxhzshq93u" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-PHP/抽象类和抽象方法" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/11/13/PHP/抽象类和抽象方法/" class="article-date">
-  <time datetime="2018-11-13T08:45:32.058Z" itemprop="datePublished">2018-11-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="抽象类"><a href="#抽象类" class="headerlink" title="抽象类"></a>抽象类</h1><h2 id="1-定义"><a href="#1-定义" class="headerlink" title="1.定义:"></a>1.定义:</h2><p>  不能实例化的类.</p>
-<h2 id="2-形式"><a href="#2-形式" class="headerlink" title="2.形式"></a>2.形式</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">abstract class 类名&#123;</span><br><span class="line">    类中成员</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="3-作用"><a href="#3-作用" class="headerlink" title="3.作用:"></a>3.作用:</h2><p>用于定义一些类的共同上级类(父类) ,  使他们具有共同的属性与方法.</p>
-<h1 id="抽象方法"><a href="#抽象方法" class="headerlink" title="抽象方法"></a>抽象方法</h1><h2 id="1-定义-1"><a href="#1-定义-1" class="headerlink" title="1.定义:"></a>1.定义:</h2><p>一个什么都不做的方法 , 没有方法体 , 只有方法头.</p>
-<h2 id="2-形式-1"><a href="#2-形式-1" class="headerlink" title="2.形式"></a>2.形式</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">abstract function 方法名(形参1,形参2......);</span><br></pre></td></tr></table></figure>
-<h2 id="3-作用-1"><a href="#3-作用-1" class="headerlink" title="3. 作用"></a>3. 作用</h2><p>规定了下级类做什么 , 但不涉及具体的实现过程 , ==子类必须强制实现继承的类型中的抽象方法==.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/11/13/PHP/抽象类和抽象方法/" data-id="cjofhygt00007jsnxo4ed6w5x" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-PHP/PHP访问控制" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/11/13/PHP/PHP访问控制/" class="article-date">
-  <time datetime="2018-11-13T08:45:31.988Z" itemprop="datePublished">2018-11-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="PHP访问控制"><a href="#PHP访问控制" class="headerlink" title="PHP访问控制"></a>PHP访问控制</h1><hr>
-<h2 id="public"><a href="#public" class="headerlink" title="public"></a>public</h2><p>公共属性,任何人都可以访问或调用.</p>
-<h2 id="protected"><a href="#protected" class="headerlink" title="protected"></a>protected</h2><p>是受保护属性,只有类本身和继承该类的子类可以访问的属性</p>
-<h2 id="private"><a href="#private" class="headerlink" title="private"></a>private</h2><p>私有属性,只能在类的内部被使用.</p>
-<h4 id="首先写一个person类"><a href="#首先写一个person类" class="headerlink" title="首先写一个person类"></a>首先写一个person类</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">class person&#123;</span><br><span class="line">    public $name = &quot;&quot;;</span><br><span class="line">    protected $age;</span><br><span class="line">    private $password;</span><br><span class="line">    </span><br><span class="line">    function __construct($name,$age,$pw)&#123;</span><br><span class="line">        $this -&gt;name = $name;</span><br><span class="line">        $this -&gt;age  = $age;</span><br><span class="line">        $this -&gt;password = $pw;</span><br><span class="line">    &#125;</span><br><span class="line">    function showinfo()&#123;</span><br><span class="line">        echo &quot;显示个人信息:&quot;;</span><br><span class="line">        echo &quot;&lt;br /&gt;名字:&quot;.$this -&gt;name;</span><br><span class="line">        echo &quot;&lt;br /&gt;年龄:&quot;.$this -&gt;age;</span><br><span class="line">        echo &quot;&lt;br /&gt;密码:&quot;.$this -&gt;password;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$p1 = new person(&quot;李明&quot;,18,1331);</span><br><span class="line">$p1 -&gt;showinfo();</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<h4 id="以上代码执行结果如下"><a href="#以上代码执行结果如下" class="headerlink" title="以上代码执行结果如下:"></a>以上代码执行结果如下:</h4><p><img src="https://note.youdao.com/yws/public/resource/caed20359e0031fbb1ecdb5137c28502/xmlnote/60F0EC956429435BAEEFBB4AAB3400A6/397" alt="image"></p>
-<p><strong>==当在类外部访问其受保护属性(protected)和私有属性(private)时会报错==</strong></p>
-<h4 id="类外访问测试代码如下"><a href="#类外访问测试代码如下" class="headerlink" title="类外访问测试代码如下:"></a>类外访问测试代码如下:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo $p1 -&gt; name;</span><br><span class="line">echo $p1 -&gt; age;</span><br><span class="line">echo $p1 -&gt; password;</span><br></pre></td></tr></table></figure>
-<h4 id="结果如下"><a href="#结果如下" class="headerlink" title="结果如下:"></a>结果如下:</h4><p><img src="https://note.youdao.com/yws/public/resource/caed20359e0031fbb1ecdb5137c28502/xmlnote/2865D1580F6C4231ACCAF46C56F05B32/425" alt="image"></p>
-<h4 id="写一个新类继承person类-代码如下"><a href="#写一个新类继承person类-代码如下" class="headerlink" title="写一个新类继承person类,代码如下:"></a>写一个新类继承person类,代码如下:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">class teacher extends person&#123;</span><br><span class="line">    function showinfo1()&#123;</span><br><span class="line">        echo &quot;显示老师信息:&quot;;</span><br><span class="line">        echo &quot;&lt;br /&gt;名字:&quot;.$this -&gt;name;</span><br><span class="line">        echo &quot;&lt;br /&gt;年龄:&quot;.$this -&gt;age;</span><br><span class="line">        echo &quot;&lt;br /&gt;密码:&quot;.$this -&gt;password;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">$t1 = new teacher(&quot;王俊奎老师&quot;,35,5666723);</span><br><span class="line">$t1 -&gt;showinfo1();</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<h4 id="执行结果如下"><a href="#执行结果如下" class="headerlink" title="执行结果如下:"></a>执行结果如下:</h4><p><img src="https://note.youdao.com/yws/public/resource/caed20359e0031fbb1ecdb5137c28502/xmlnote/3A6D7D5CA336454293497DA57CC9B427/427" alt="image"></p>
-<p>发现结果中不会显示$password这个私有属性,<strong>==说明继承类只能访问公有属性和受保护属性.==</strong></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/11/13/PHP/PHP访问控制/" data-id="cjofhygsw0004jsnx6zaeb03l" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-PHP/显示与逻辑相分离的业务需求" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/11/13/PHP/显示与逻辑相分离的业务需求/" class="article-date">
-  <time datetime="2018-11-13T08:44:43.346Z" itemprop="datePublished">2018-11-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="显示与逻辑相分离"><a href="#显示与逻辑相分离" class="headerlink" title="显示与逻辑相分离"></a>显示与逻辑相分离</h1><h2 id="需求"><a href="#需求" class="headerlink" title="需求:"></a>需求:</h2><h3 id="显示当前时间-用户选择显示方式"><a href="#显示当前时间-用户选择显示方式" class="headerlink" title="显示当前时间,用户选择显示方式:"></a>显示当前时间,用户选择显示方式:</h3><pre><code>1.年月日    
-2.时分秒
-3.年月日,时分秒
-</code></pre><h2 id="原始做法-显示与逻辑混合"><a href="#原始做法-显示与逻辑混合" class="headerlink" title="原始做法:显示与逻辑混合"></a>原始做法:显示与逻辑混合</h2><p>1show_time.php<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;p align=&quot;center&quot;&gt;</span><br><span class="line">	&lt;a href = &apos;?type=1&apos;&gt;形式一&lt;/a&gt;</span><br><span class="line">	&lt;a href = &apos;?type=2&apos;&gt;形式二&lt;/a&gt;</span><br><span class="line">	&lt;a href = &apos;?type=3&apos;&gt;形式三&lt;/a&gt;</span><br><span class="line">&lt;/p&gt;</span><br><span class="line">&lt;hr color = &quot;red&quot;&gt;&lt;/hr&gt;</span><br><span class="line">&lt;?php</span><br><span class="line">if(!empty($_GET[&apos;type&apos;]) &amp;&amp; $_GET[&apos;type&apos;]==2)&#123;</span><br><span class="line">	$t1 = date(&quot;H : i : s&quot;);</span><br><span class="line">&#125;</span><br><span class="line">else if (!empty($_GET[&apos;type&apos;]) &amp;&amp; $_GET[&apos;type&apos;]==3)&#123;</span><br><span class="line">	$t1 = date(&quot;Y年m月d日  H : i : s&quot;);</span><br><span class="line">&#125;</span><br><span class="line">else&#123;</span><br><span class="line">	$t1 = date(&quot;Y年m月d日&quot;);</span><br><span class="line">&#125;</span><br><span class="line">echo &quot;&lt;h1&gt;$t1&lt;/h1&gt;&quot;;</span><br></pre></td></tr></table></figure></p>
-<h2 id="改进做法"><a href="#改进做法" class="headerlink" title="改进做法"></a>改进做法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">if(!empty($_GET[&apos;type&apos;]) &amp;&amp; $_GET[&apos;type&apos;]==2)&#123;</span><br><span class="line">	$t1 = date(&quot;H : i : s&quot;);</span><br><span class="line">&#125;</span><br><span class="line">else if (!empty($_GET[&apos;type&apos;]) &amp;&amp; $_GET[&apos;type&apos;]==3)&#123;</span><br><span class="line">	$t1 = date(&quot;Y年m月d日  H : i : s&quot;);</span><br><span class="line">&#125;</span><br><span class="line">else&#123;</span><br><span class="line">	$t1 = date(&quot;Y年m月d日&quot;);</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br><span class="line">&lt;p align=&quot;center&quot;&gt;</span><br><span class="line">	&lt;a href = &apos;?type=1&apos;&gt;形式一&lt;/a&gt;</span><br><span class="line">	&lt;a href = &apos;?type=2&apos;&gt;形式二&lt;/a&gt;</span><br><span class="line">	&lt;a href = &apos;?type=3&apos;&gt;形式三&lt;/a&gt;</span><br><span class="line">&lt;/p&gt;</span><br><span class="line">&lt;hr color = &quot;red&quot;&gt;&lt;/hr&gt;</span><br><span class="line"></span><br><span class="line">&lt;h1 align=&quot;center&quot;&gt;</span><br><span class="line">		&lt;?php</span><br><span class="line">		echo $t1;</span><br><span class="line">		?&gt;</span><br><span class="line">&lt;/h1&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="结果展示"><a href="#结果展示" class="headerlink" title="结果展示:"></a>结果展示:</h3><h2 id="高级做法-显示与逻辑分离"><a href="#高级做法-显示与逻辑分离" class="headerlink" title="高级做法:显示与逻辑分离"></a>高级做法:显示与逻辑分离</h2><p>2show_time.php(逻辑部分)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">include &quot;./time.html&quot;;</span><br><span class="line"></span><br><span class="line">if(!empty($_GET[&apos;type&apos;]) &amp;&amp; $_GET[&apos;type&apos;]==2)&#123;</span><br><span class="line">	$t1 = date(&quot;H : i : s&quot;);</span><br><span class="line">&#125;</span><br><span class="line">else if (!empty($_GET[&apos;type&apos;]) &amp;&amp; $_GET[&apos;type&apos;]==3)&#123;</span><br><span class="line">	$t1 = date(&quot;Y年m月d日  H : i : s&quot;);</span><br><span class="line">&#125;</span><br><span class="line">else&#123;</span><br><span class="line">	$t1 = date(&quot;Y年m月d日&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>2show_time.html(显示部分)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;p align=&quot;center&quot;&gt;</span><br><span class="line">	&lt;a href = &apos;?type=1&apos;&gt;形式一&lt;/a&gt;</span><br><span class="line">	&lt;a href = &apos;?type=2&apos;&gt;形式二&lt;/a&gt;</span><br><span class="line">	&lt;a href = &apos;?type=3&apos;&gt;形式三&lt;/a&gt;</span><br><span class="line">&lt;/p&gt;</span><br><span class="line">&lt;hr color = &quot;red&quot;&gt;&lt;/hr&gt;</span><br><span class="line"></span><br><span class="line">&lt;h1 align=&quot;center&quot;&gt;</span><br><span class="line">		&lt;?php</span><br><span class="line">		echo $t1;</span><br><span class="line">		?&gt;</span><br><span class="line">&lt;/h1&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="结果与上面一致"><a href="#结果与上面一致" class="headerlink" title="结果与上面一致"></a>结果与上面一致</h3><h1 id="模板技术"><a href="#模板技术" class="headerlink" title="模板技术"></a>模板技术</h1><h3 id="在许多网站或应用中-常常需要做到功能不变-前端显示经常变化的业务需求-模板技术就是为了实现这样的需求"><a href="#在许多网站或应用中-常常需要做到功能不变-前端显示经常变化的业务需求-模板技术就是为了实现这样的需求" class="headerlink" title="在许多网站或应用中, 常常需要做到功能不变  前端显示经常变化的业务需求.模板技术就是为了实现这样的需求."></a>在许多网站或应用中, 常常需要做到功能不变  前端显示经常变化的业务需求.模板技术就是为了实现这样的需求.</h3><p>对于功能不变 前端显示经常变化的页面 可以将它们写成不同的.html文件,在需要时,只需要将这些html文件映入进来就可以完成需求的更改.</p>
-<h3 id="一个逻辑-time-php"><a href="#一个逻辑-time-php" class="headerlink" title="一个逻辑(time.php)"></a>一个逻辑(time.php)</h3><h3 id="三个板式-time-1-html-time-2-html-time-3-html"><a href="#三个板式-time-1-html-time-2-html-time-3-html" class="headerlink" title="三个板式(time_1.html   time_2.html    time_3.html)"></a>三个板式(time_1.html   time_2.html    time_3.html)</h3><p>time.php</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$t1 = date(&quot;Y年m月d日 H : i : s&quot;);</span><br><span class="line">if (!empty($_GET[&apos;ban&apos;]) &amp;&amp; $_GET[&apos;ban&apos;] == 2)&#123;</span><br><span class="line">	$ban_file = &quot;./time_2.html&quot;;</span><br><span class="line">&#125;</span><br><span class="line">else if (!empty($_GET[&apos;ban&apos;]) &amp;&amp; $_GET[&apos;ban&apos;] == 3)&#123;</span><br><span class="line">	$ban_file = &quot;./time_3.html&quot;;</span><br><span class="line">&#125;</span><br><span class="line">else&#123;</span><br><span class="line">	$ban_file = &quot;./time_1.html&quot;;</span><br><span class="line">&#125;</span><br><span class="line">include $ban_file;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>time_1.html</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">	&lt;html&gt;</span><br><span class="line">	&lt;head&gt;</span><br><span class="line">		&lt;meta http-equiv = &quot;Content-Type&quot; content=&quot;text/html;charste=UTF-8&quot;/&gt;</span><br><span class="line">		&lt;title&gt;&lt;/title&gt;</span><br><span class="line">		&lt;style&gt;</span><br><span class="line">		h1 &#123;color : red;</span><br><span class="line">			background: yellow&#125;</span><br><span class="line">		&lt;/style&gt;</span><br><span class="line">	&lt;/head&gt;</span><br><span class="line">	&lt;body bgcolor = &quot;red&quot;&gt;</span><br><span class="line">		&lt;p align=&quot;center&quot;&gt;</span><br><span class="line">			&lt;a href = &apos;?ban=1&apos;&gt;板式一&lt;/a&gt;</span><br><span class="line">			&lt;a href = &apos;?ban=2&apos;&gt;板式二&lt;/a&gt;</span><br><span class="line">			&lt;a href = &apos;?ban=3&apos;&gt;板式三&lt;/a&gt;</span><br><span class="line">		&lt;/p&gt;</span><br><span class="line">		&lt;hr color = &quot;red&quot;&gt;&lt;/hr&gt;</span><br><span class="line"></span><br><span class="line">		&lt;h1 align=&quot;center&quot;&gt;</span><br><span class="line">			&lt;?php echo $t1;?&gt;</span><br><span class="line">		&lt;/h1&gt;	</span><br><span class="line">	&lt;/body&gt;</span><br><span class="line">	&lt;/html&gt;</span><br></pre></td></tr></table></figure>
-<p>time_2.html</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">	&lt;html&gt;</span><br><span class="line">	&lt;head&gt;</span><br><span class="line">		&lt;meta http-equiv = &quot;Content-Type&quot; content=&quot;text/html;charste=UTF-8&quot;/&gt;</span><br><span class="line">		&lt;title&gt;&lt;/title&gt;</span><br><span class="line">		&lt;style&gt;</span><br><span class="line">		h1 &#123;color : red;</span><br><span class="line">			background: yellow&#125;</span><br><span class="line">		&lt;/style&gt;</span><br><span class="line">	&lt;/head&gt;</span><br><span class="line">	&lt;body bgcolor = &quot;green&quot;&gt;</span><br><span class="line">		&lt;p align=&quot;center&quot;&gt;</span><br><span class="line">			&lt;a href = &apos;?ban=1&apos;&gt;板式一&lt;/a&gt;</span><br><span class="line">			&lt;a href = &apos;?ban=2&apos;&gt;板式二&lt;/a&gt;</span><br><span class="line">			&lt;a href = &apos;?ban=3&apos;&gt;板式三&lt;/a&gt;</span><br><span class="line">		&lt;/p&gt;</span><br><span class="line">		&lt;hr color = &quot;red&quot;&gt;&lt;/hr&gt;</span><br><span class="line"></span><br><span class="line">		&lt;h1 align=&quot;center&quot;&gt;</span><br><span class="line">			&lt;?php echo $t1;?&gt;</span><br><span class="line">		&lt;/h1&gt;	</span><br><span class="line">	&lt;/body&gt;</span><br><span class="line">	&lt;/html&gt;</span><br></pre></td></tr></table></figure>
-<p>time_3.html</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">	&lt;html&gt;</span><br><span class="line">	&lt;head&gt;</span><br><span class="line">		&lt;meta http-equiv = &quot;Content-Type&quot; content=&quot;text/html;charste=UTF-8&quot;/&gt;</span><br><span class="line">		&lt;title&gt;&lt;/title&gt;</span><br><span class="line">		&lt;style&gt;</span><br><span class="line">		h1 &#123;color : red;</span><br><span class="line">			background: yellow&#125;</span><br><span class="line">		&lt;/style&gt;</span><br><span class="line">	&lt;/head&gt;</span><br><span class="line">	&lt;body bgcolor = &quot;bulue&quot;&gt;</span><br><span class="line">		&lt;p align=&quot;center&quot;&gt;</span><br><span class="line">			&lt;a href = &apos;?ban=1&apos;&gt;板式一&lt;/a&gt;</span><br><span class="line">			&lt;a href = &apos;?ban=2&apos;&gt;板式二&lt;/a&gt;</span><br><span class="line">			&lt;a href = &apos;?ban=3&apos;&gt;板式三&lt;/a&gt;</span><br><span class="line">		&lt;/p&gt;</span><br><span class="line">		&lt;hr color = &quot;red&quot;&gt;&lt;/hr&gt;</span><br><span class="line"></span><br><span class="line">		&lt;h1 align=&quot;center&quot;&gt;</span><br><span class="line">			&lt;?php echo $t1;?&gt;</span><br><span class="line">		&lt;/h1&gt;	</span><br><span class="line">	&lt;/body&gt;</span><br><span class="line">	&lt;/html&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="结果展示-1"><a href="#结果展示-1" class="headerlink" title="结果展示:"></a>结果展示:</h3>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/11/13/PHP/显示与逻辑相分离的业务需求/" data-id="cjofhygt50009jsnxsfr6c9il" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-显示与逻辑相分离的业务需求" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/11/13/显示与逻辑相分离的业务需求/" class="article-date">
-  <time datetime="2018-11-13T08:40:29.024Z" itemprop="datePublished">2018-11-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="显示与逻辑相分离"><a href="#显示与逻辑相分离" class="headerlink" title="显示与逻辑相分离"></a>显示与逻辑相分离</h1><h2 id="需求"><a href="#需求" class="headerlink" title="需求:"></a>需求:</h2><h3 id="显示当前时间-用户选择显示方式"><a href="#显示当前时间-用户选择显示方式" class="headerlink" title="显示当前时间,用户选择显示方式:"></a>显示当前时间,用户选择显示方式:</h3><pre><code>1.年月日    
-2.时分秒
-3.年月日,时分秒
-</code></pre><h2 id="原始做法-显示与逻辑混合"><a href="#原始做法-显示与逻辑混合" class="headerlink" title="原始做法:显示与逻辑混合"></a>原始做法:显示与逻辑混合</h2><p>1show_time.php<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;p align=&quot;center&quot;&gt;</span><br><span class="line">	&lt;a href = &apos;?type=1&apos;&gt;形式一&lt;/a&gt;</span><br><span class="line">	&lt;a href = &apos;?type=2&apos;&gt;形式二&lt;/a&gt;</span><br><span class="line">	&lt;a href = &apos;?type=3&apos;&gt;形式三&lt;/a&gt;</span><br><span class="line">&lt;/p&gt;</span><br><span class="line">&lt;hr color = &quot;red&quot;&gt;&lt;/hr&gt;</span><br><span class="line">&lt;?php</span><br><span class="line">if(!empty($_GET[&apos;type&apos;]) &amp;&amp; $_GET[&apos;type&apos;]==2)&#123;</span><br><span class="line">	$t1 = date(&quot;H : i : s&quot;);</span><br><span class="line">&#125;</span><br><span class="line">else if (!empty($_GET[&apos;type&apos;]) &amp;&amp; $_GET[&apos;type&apos;]==3)&#123;</span><br><span class="line">	$t1 = date(&quot;Y年m月d日  H : i : s&quot;);</span><br><span class="line">&#125;</span><br><span class="line">else&#123;</span><br><span class="line">	$t1 = date(&quot;Y年m月d日&quot;);</span><br><span class="line">&#125;</span><br><span class="line">echo &quot;&lt;h1&gt;$t1&lt;/h1&gt;&quot;;</span><br></pre></td></tr></table></figure></p>
-<h2 id="改进做法"><a href="#改进做法" class="headerlink" title="改进做法"></a>改进做法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">if(!empty($_GET[&apos;type&apos;]) &amp;&amp; $_GET[&apos;type&apos;]==2)&#123;</span><br><span class="line">	$t1 = date(&quot;H : i : s&quot;);</span><br><span class="line">&#125;</span><br><span class="line">else if (!empty($_GET[&apos;type&apos;]) &amp;&amp; $_GET[&apos;type&apos;]==3)&#123;</span><br><span class="line">	$t1 = date(&quot;Y年m月d日  H : i : s&quot;);</span><br><span class="line">&#125;</span><br><span class="line">else&#123;</span><br><span class="line">	$t1 = date(&quot;Y年m月d日&quot;);</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br><span class="line">&lt;p align=&quot;center&quot;&gt;</span><br><span class="line">	&lt;a href = &apos;?type=1&apos;&gt;形式一&lt;/a&gt;</span><br><span class="line">	&lt;a href = &apos;?type=2&apos;&gt;形式二&lt;/a&gt;</span><br><span class="line">	&lt;a href = &apos;?type=3&apos;&gt;形式三&lt;/a&gt;</span><br><span class="line">&lt;/p&gt;</span><br><span class="line">&lt;hr color = &quot;red&quot;&gt;&lt;/hr&gt;</span><br><span class="line"></span><br><span class="line">&lt;h1 align=&quot;center&quot;&gt;</span><br><span class="line">		&lt;?php</span><br><span class="line">		echo $t1;</span><br><span class="line">		?&gt;</span><br><span class="line">&lt;/h1&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="结果展示"><a href="#结果展示" class="headerlink" title="结果展示:"></a>结果展示:</h3><h2 id="高级做法-显示与逻辑分离"><a href="#高级做法-显示与逻辑分离" class="headerlink" title="高级做法:显示与逻辑分离"></a>高级做法:显示与逻辑分离</h2><p>2show_time.php(逻辑部分)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">include &quot;./time.html&quot;;</span><br><span class="line"></span><br><span class="line">if(!empty($_GET[&apos;type&apos;]) &amp;&amp; $_GET[&apos;type&apos;]==2)&#123;</span><br><span class="line">	$t1 = date(&quot;H : i : s&quot;);</span><br><span class="line">&#125;</span><br><span class="line">else if (!empty($_GET[&apos;type&apos;]) &amp;&amp; $_GET[&apos;type&apos;]==3)&#123;</span><br><span class="line">	$t1 = date(&quot;Y年m月d日  H : i : s&quot;);</span><br><span class="line">&#125;</span><br><span class="line">else&#123;</span><br><span class="line">	$t1 = date(&quot;Y年m月d日&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>2show_time.html(显示部分)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;p align=&quot;center&quot;&gt;</span><br><span class="line">	&lt;a href = &apos;?type=1&apos;&gt;形式一&lt;/a&gt;</span><br><span class="line">	&lt;a href = &apos;?type=2&apos;&gt;形式二&lt;/a&gt;</span><br><span class="line">	&lt;a href = &apos;?type=3&apos;&gt;形式三&lt;/a&gt;</span><br><span class="line">&lt;/p&gt;</span><br><span class="line">&lt;hr color = &quot;red&quot;&gt;&lt;/hr&gt;</span><br><span class="line"></span><br><span class="line">&lt;h1 align=&quot;center&quot;&gt;</span><br><span class="line">		&lt;?php</span><br><span class="line">		echo $t1;</span><br><span class="line">		?&gt;</span><br><span class="line">&lt;/h1&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="结果与上面一致"><a href="#结果与上面一致" class="headerlink" title="结果与上面一致"></a>结果与上面一致</h3><h1 id="模板技术"><a href="#模板技术" class="headerlink" title="模板技术"></a>模板技术</h1><h3 id="在许多网站或应用中-常常需要做到功能不变-前端显示经常变化的业务需求-模板技术就是为了实现这样的需求"><a href="#在许多网站或应用中-常常需要做到功能不变-前端显示经常变化的业务需求-模板技术就是为了实现这样的需求" class="headerlink" title="在许多网站或应用中, 常常需要做到功能不变  前端显示经常变化的业务需求.模板技术就是为了实现这样的需求."></a>在许多网站或应用中, 常常需要做到功能不变  前端显示经常变化的业务需求.模板技术就是为了实现这样的需求.</h3><p>对于功能不变 前端显示经常变化的页面 可以将它们写成不同的.html文件,在需要时,只需要将这些html文件映入进来就可以完成需求的更改.</p>
-<h3 id="一个逻辑-time-php"><a href="#一个逻辑-time-php" class="headerlink" title="一个逻辑(time.php)"></a>一个逻辑(time.php)</h3><h3 id="三个板式-time-1-html-time-2-html-time-3-html"><a href="#三个板式-time-1-html-time-2-html-time-3-html" class="headerlink" title="三个板式(time_1.html   time_2.html    time_3.html)"></a>三个板式(time_1.html   time_2.html    time_3.html)</h3><p>time.php</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$t1 = date(&quot;Y年m月d日 H : i : s&quot;);</span><br><span class="line">if (!empty($_GET[&apos;ban&apos;]) &amp;&amp; $_GET[&apos;ban&apos;] == 2)&#123;</span><br><span class="line">	$ban_file = &quot;./time_2.html&quot;;</span><br><span class="line">&#125;</span><br><span class="line">else if (!empty($_GET[&apos;ban&apos;]) &amp;&amp; $_GET[&apos;ban&apos;] == 3)&#123;</span><br><span class="line">	$ban_file = &quot;./time_3.html&quot;;</span><br><span class="line">&#125;</span><br><span class="line">else&#123;</span><br><span class="line">	$ban_file = &quot;./time_1.html&quot;;</span><br><span class="line">&#125;</span><br><span class="line">include $ban_file;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-<p>time_1.html</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">	&lt;html&gt;</span><br><span class="line">	&lt;head&gt;</span><br><span class="line">		&lt;meta http-equiv = &quot;Content-Type&quot; content=&quot;text/html;charste=UTF-8&quot;/&gt;</span><br><span class="line">		&lt;title&gt;&lt;/title&gt;</span><br><span class="line">		&lt;style&gt;</span><br><span class="line">		h1 &#123;color : red;</span><br><span class="line">			background: yellow&#125;</span><br><span class="line">		&lt;/style&gt;</span><br><span class="line">	&lt;/head&gt;</span><br><span class="line">	&lt;body bgcolor = &quot;red&quot;&gt;</span><br><span class="line">		&lt;p align=&quot;center&quot;&gt;</span><br><span class="line">			&lt;a href = &apos;?ban=1&apos;&gt;板式一&lt;/a&gt;</span><br><span class="line">			&lt;a href = &apos;?ban=2&apos;&gt;板式二&lt;/a&gt;</span><br><span class="line">			&lt;a href = &apos;?ban=3&apos;&gt;板式三&lt;/a&gt;</span><br><span class="line">		&lt;/p&gt;</span><br><span class="line">		&lt;hr color = &quot;red&quot;&gt;&lt;/hr&gt;</span><br><span class="line"></span><br><span class="line">		&lt;h1 align=&quot;center&quot;&gt;</span><br><span class="line">			&lt;?php echo $t1;?&gt;</span><br><span class="line">		&lt;/h1&gt;	</span><br><span class="line">	&lt;/body&gt;</span><br><span class="line">	&lt;/html&gt;</span><br></pre></td></tr></table></figure>
-<p>time_2.html</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">	&lt;html&gt;</span><br><span class="line">	&lt;head&gt;</span><br><span class="line">		&lt;meta http-equiv = &quot;Content-Type&quot; content=&quot;text/html;charste=UTF-8&quot;/&gt;</span><br><span class="line">		&lt;title&gt;&lt;/title&gt;</span><br><span class="line">		&lt;style&gt;</span><br><span class="line">		h1 &#123;color : red;</span><br><span class="line">			background: yellow&#125;</span><br><span class="line">		&lt;/style&gt;</span><br><span class="line">	&lt;/head&gt;</span><br><span class="line">	&lt;body bgcolor = &quot;green&quot;&gt;</span><br><span class="line">		&lt;p align=&quot;center&quot;&gt;</span><br><span class="line">			&lt;a href = &apos;?ban=1&apos;&gt;板式一&lt;/a&gt;</span><br><span class="line">			&lt;a href = &apos;?ban=2&apos;&gt;板式二&lt;/a&gt;</span><br><span class="line">			&lt;a href = &apos;?ban=3&apos;&gt;板式三&lt;/a&gt;</span><br><span class="line">		&lt;/p&gt;</span><br><span class="line">		&lt;hr color = &quot;red&quot;&gt;&lt;/hr&gt;</span><br><span class="line"></span><br><span class="line">		&lt;h1 align=&quot;center&quot;&gt;</span><br><span class="line">			&lt;?php echo $t1;?&gt;</span><br><span class="line">		&lt;/h1&gt;	</span><br><span class="line">	&lt;/body&gt;</span><br><span class="line">	&lt;/html&gt;</span><br></pre></td></tr></table></figure>
-<p>time_3.html</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">	&lt;html&gt;</span><br><span class="line">	&lt;head&gt;</span><br><span class="line">		&lt;meta http-equiv = &quot;Content-Type&quot; content=&quot;text/html;charste=UTF-8&quot;/&gt;</span><br><span class="line">		&lt;title&gt;&lt;/title&gt;</span><br><span class="line">		&lt;style&gt;</span><br><span class="line">		h1 &#123;color : red;</span><br><span class="line">			background: yellow&#125;</span><br><span class="line">		&lt;/style&gt;</span><br><span class="line">	&lt;/head&gt;</span><br><span class="line">	&lt;body bgcolor = &quot;bulue&quot;&gt;</span><br><span class="line">		&lt;p align=&quot;center&quot;&gt;</span><br><span class="line">			&lt;a href = &apos;?ban=1&apos;&gt;板式一&lt;/a&gt;</span><br><span class="line">			&lt;a href = &apos;?ban=2&apos;&gt;板式二&lt;/a&gt;</span><br><span class="line">			&lt;a href = &apos;?ban=3&apos;&gt;板式三&lt;/a&gt;</span><br><span class="line">		&lt;/p&gt;</span><br><span class="line">		&lt;hr color = &quot;red&quot;&gt;&lt;/hr&gt;</span><br><span class="line"></span><br><span class="line">		&lt;h1 align=&quot;center&quot;&gt;</span><br><span class="line">			&lt;?php echo $t1;?&gt;</span><br><span class="line">		&lt;/h1&gt;	</span><br><span class="line">	&lt;/body&gt;</span><br><span class="line">	&lt;/html&gt;</span><br></pre></td></tr></table></figure>
-<h3 id="结果展示-1"><a href="#结果展示-1" class="headerlink" title="结果展示:"></a>结果展示:</h3>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/11/13/显示与逻辑相分离的业务需求/" data-id="cjofhygrw0001jsnxosrvuvho" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2018/11/13/hello-world/" data-id="cjofi46v50000vsnx485tv28r" class="article-share-link">Share</a>
       
       
     </footer>
@@ -406,11 +108,6 @@
 
   
 
-
-  <nav id="page-nav">
-    
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
-  </nav>
 
 </section>
         
@@ -441,23 +138,7 @@
       <ul>
         
           <li>
-            <a href="/2018/11/13/PHP/数据库连接类(DB)/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2018/11/13/PHP/PHP单例模式/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2018/11/13/PHP/最终类和最终方法/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2018/11/13/PHP/工厂模式/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2018/11/13/PHP/Mysqli面向过程的使用方法/">(no title)</a>
+            <a href="/2018/11/13/hello-world/">Hello World</a>
           </li>
         
       </ul>
